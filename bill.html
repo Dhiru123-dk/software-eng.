@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+<p><button onclick="loadXMLDoc()">Get Bill Details</button></p>
+
+<table id="demo" border="1">
+</table>
+
+<script>
+function loadXMLDoc() {
+  var xmlhttp = new XMLHttpRequest();
+  xmlhttp.onreadystatechange = function() {
+    if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+      myFunction(xmlhttp);
+    }
+  };
+  xmlhttp.open("GET", "bill.xml" , true);
+  xmlhttp.send();
+}
+
+function myFunction(xml) {
+  var x, i, xmlDoc, table,tot=0;
+  xmlDoc = xml.responseXML;
+  table = "<tr><th>Item Name</th><th>Quantity</th><th>Price</th><th>Amount</th></tr>";
+  x = xmlDoc.getElementsByTagName("item")
+  for (i = 0; i < x.length; i++) 
+  { 
+   var na= x[i].getElementsByTagName("name")[0].childNodes[0].nodeValue;
+   var q= x[i].getElementsByTagName("quantity")[0].childNodes[0].nodeValue;
+   var p=x[i].getElementsByTagName("price")[0].childNodes[0].nodeValue;
+   var amt=parseInt(x[i].getElementsByTagName("quantity")[0].childNodes[0].nodeValue) * parseInt(x[i].getElementsByTagName("price")[0].childNodes[0].nodeValue);
+    table += "<tr><td>" + na + "</td><td>" + q + "</td><td>" + p + "</td><td>" + amt + "</td></tr>";
+   tot += amt;
+  }
+  table +="<tr><td>" + "</td><td>" + "</td><td>" + "</td><td>" + tot + "</td></tr>" ;
+  document.getElementById("demo").innerHTML = table;
+}
+</script>
+
+</body>
+</html>
